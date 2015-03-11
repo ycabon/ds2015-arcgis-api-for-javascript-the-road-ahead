@@ -46,6 +46,7 @@ var view = new View3D({
 ```
 
 
+
 ## Properties watching
  - get/set/watch with a custom mixin Accessor
  - get: get the value
