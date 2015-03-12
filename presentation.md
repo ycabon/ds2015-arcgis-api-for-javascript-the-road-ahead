@@ -1,5 +1,6 @@
-<!-- .slide: data-background="firstslide.jpg" -->
-#ArcGIS API for Javascript: Road-ahead
+<!-- .slide: data-background="background_title.jpg" -->
+#ArcGIS API for Javascript
+#Road-ahead
 Jeremy Bartley - Yann Cabon
 
 
@@ -21,15 +22,21 @@ Jeremy Bartley - Yann Cabon
 
 ## 2D/3D
  - Starting point of 4.0: 3D is coming!
- - currently in a Map: 1 Layer === 1 DOM Node
- - Can't work
+ - currently in 3.x:
+   - Map, many DOM nodes
+   - Each Layer, 1 DOM Node
+ - Can't work, WebGL renders in one Canvas
  - Solution?
 
 
+
+## 2D/3D
  - Separate the business logic from the drawing logic.
- - New model: Map/Layers + View(s)/LayerViews
- - Communication model: events and properties watching
- - -> decoupling, clearer about what's going on when a property changes 
+![New model: Map/Layers + View(s)/LayerViews](architecture.png)
+ - Communication model by __events__ and __properties watching__
+   - clean decoupling
+   - clearer about what's going on when something changes 
+
 
 
 ```javascript
@@ -47,18 +54,19 @@ var view = new View3D({
 
 
 
+## `esri/Accessor`
+ - Mixin similar to `dojo/Stateful` with few differences
+   - single object constructor
+   - `get()` get a property value
+   - `set()` set a property value
+   - `watch()` be notified when property changes
+
+
+
 ## Properties watching
- - get/set/watch with a custom mixin Accessor
- - get: get the value
- - set: set the value
- - watch: be notified when property changes
-
-
  - looks like dojo.Stateful with some changes
    - no support for setters returning a promise, for speed
    - watch callback signature is a bit different, because we care more about the new value.
-
-
  - Direct benefits:
    - remove inconsistancies, ctor, setter functions with parameters, no event for all properties etc...
    - one convention everywhere. You just need to know what property for which class
@@ -71,24 +79,28 @@ var view = new View3D({
 
 
 ## Layers
- - Will all extends Accessor
- - Shorter names
- - So far TiledLayer/WebTiledLayer/OSM, DynamicLayer, FeatureLayer
- - One collection of operational layers, for all types of operational layers
- - -> GraphicsLayer can be placed where you decide image layers!
+
+ - `map.layers`, a collection of the operational layers
+   - mix of image AND graphics
+ - Shorter names: `ArcGISTiledLayer`, `ArcGISDynamicLayer`
+ - new ones:
+   - `ArcGISElevationLayer`
+   - `SceneLayer`
+   - `GroupLayer`
 
 
 
 ## GroupLayer
+
  - New layer: GroupLayer
  - group layers together
- - visibility mode: 'exclusive', 'independent', 'inherit'
+ - visibility mode: `exclusive`, `independent`, `inherit`
  - listMode: 'hide-children', 'hidden'
- - part of the webscene spec, demo with webscene viewer
 
 
 
 ## Collection
+
  - More or less like an Array
  - add/remove/find/forEach/map...
  - emit events when it changes with what has been added/removed/moved
@@ -97,10 +109,41 @@ var view = new View3D({
 
 
 ## Basemap
- - basemap is not part of the Map.layers
- - fully fledge class 'esri/Basemap'
- - contains 3 Collections: baseLayers, referenceLayers, elevationLayers
- - can be set with string for esri's basemap or custom Basemap instance.
+
+- full fledge class `esri/Basemap`
+- basemap's layers are not part of the `map.layers`, but from `map.basemap`
+- contains 3 Collections: baseLayers, referenceLayers, elevationLayers
+- can be set with string for esri's basemap or custom Basemap instance.
+
+
+
+## Basemap
+
+ - `basemap` as a string, creation of the appropriated Basemap instance
+
+  ```javascript
+  var map = new Map({
+    basemap: 'topo'
+  });
+
+  map.set('basemap', 'streets');
+  ```
+
+ - `basemap` as an instance of `Basemap`
+
+  ```javascript
+  var map = new Map({/*...*/});
+
+  var toner = new Basemap({
+    baseLayers: [
+      new WebTiledLayer({
+        urlTemplate
+      })
+    ]
+  })
+
+  map.set('basemap', 'streets');
+  ```
 
 
 
@@ -125,8 +168,16 @@ var view = new View3D({
 
 
 ## Animation
- - generic functions like animateTo(target, options)
- - Viewpoint: common way to share between 2D/3D (part of webscene spec)
+ - generic functions like `animateTo(target, options):Promise`
+   - 
+ - `esri/Viewpoint`: common way to share between 2D/3D
+
+
+
+### Webmap & Webscene APIs
+ - read
+ - save
+ - save as
 
 
 
@@ -137,27 +188,18 @@ var view = new View3D({
 
 
 
-## in short 4.0 final
- - brings 3D
- - makes 2D better
- - has a nicer/simpler API
+## Conclusion
+ - One API
+ - 3D, and better 2D
+ - simplified API
 
 
 
-## Future:
- - (Jeremy?)
-
-
-
-### Future: Webmap/Webscene APIs
- - read AND write webmap/webscene
- - ... (jeremy?)
-
-
-
-### Roadmap
- - 
-
-
-
+<!-- .slide: data-background="background_title.jpg" -->
 # Questions
+
+
+
+<!-- .slide: data-background="background_title.jpg" -->
+# Rate This Session
+[www.esri.com/RateMyDevSummitSession](www.esri.com/RateMyDevSummitSession)
