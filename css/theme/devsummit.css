@@ -180,16 +180,17 @@ body {
  * LINKS
  *********************************************/
 .reveal a {
-  color: #42affa;
+  color: #FAD542;
   text-decoration: none;
   -webkit-transition: color 0.15s ease;
   -moz-transition: color 0.15s ease;
   transition: color 0.15s ease; }
 
 .reveal a:hover {
-  color: #8dcffc;
+  color: #FCE68D;
   text-shadow: none;
-  border: none; }
+  border: none; 
+}
 
 .reveal .roll span:after {
   color: #fff;

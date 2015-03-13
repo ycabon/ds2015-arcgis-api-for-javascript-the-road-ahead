@@ -6,14 +6,14 @@ Jeremy Bartley - Yann Cabon
 
 
 ## 3.x
- - Geometry Engine
- - Smart Mapping API
- - Image Server
- - ...
+ - [Geometry Engine](http://developers.arcgis.com/javascript/samples/ge_geodesic_buffers/)
+ - [Smart Mapping](http://developers.arcgis.com/javascript/samples/smartmapping_bycolor/)
+ - [Image Server](http://developers.arcgis.com/javascript/samples/layers_imageservicevector/)
+ - [Quantization](demos/quantization/PIXELATE_ALL_THE_POLYGONS.html) vs. [Generalization](demos/quantization/TRIANGULATE_ALL_THE_POLYGONS.html)
 
 
 
-## 4.0
+## 4.0 - highlights
  - 2D/3D
  - multiple betas during 2015
  - API 4.0: new concepts & changes
@@ -22,7 +22,7 @@ Jeremy Bartley - Yann Cabon
 
 ## 2D/3D
  - Starting point of 4.0: 3D is coming!
- - currently in 3.x:
+ - currently in [3.x](http://developers.arcgis.com/javascript/samples/map_simple/):
    - Map, many DOM nodes
    - Each Layer, 1 DOM Node
  - Can't work, WebGL renders in one Canvas
@@ -40,41 +40,56 @@ Jeremy Bartley - Yann Cabon
 
 
 ```javascript
+// create the map and its layers
 var map = new Map({
   basemap: "topo"
 });
 map.add(new FeatureLayer(...));
 
-/* create a 3D view for the Map */
+// create a 3D view for the Map
 var view = new View3D({
   map: map,
-  container: "globeDiv"
+  container: "viewDiv"
 });
 ```
 
 
 
 ## `esri/Accessor`
- - Mixin similar to `dojo/Stateful` with few differences
+ - Mixin similar to `dojo/Stateful`
    - single object constructor
-   - `get()` get a property value
-   - `set()` set a property value
-   - `watch()` be notified when property changes
+   - `get()`, `set()`, `watch()`
+ - Difference: watch callback signature is a bit different
+
+     `Stateful`:
+```javascript
+map.watch('basemap', function(name, oldValue, newValue) {
+  // ...
+});
+```
+     `Accessor`:
+```javascript
+map.watch('basemap', function(newValue, oldValue, name, target) {
+  // ...
+});
+```
+ - Difference: no support for setters returning a promise
 
 
 
 ## Properties watching
- - looks like dojo.Stateful with some changes
-   - no support for setters returning a promise, for speed
-   - watch callback signature is a bit different, because we care more about the new value.
+
  - Direct benefits:
-   - remove inconsistancies, ctor, setter functions with parameters, no event for all properties etc...
-   - one convention everywhere. You just need to know what property for which class
+   - remove inconsistancies between constructor, getter, setter functions, events
+   - one convention everywhere. _"just need to know what property for a sclass"_
    - Single object constructor, no more 3+ constructors
-   - Leaner SDK: we just have to doc the properties, the rest is conventional
+   - Leaner SDK: we doc only the properties, the rest is convention
+
  - Changes:
-   - no more <property>-change events => watch()
-   - watching for extent, not good since it changes all the time, new events for animation. 
+   - no more **_property_**-change events, use `watch()`
+   - in 3.x, listen for `extent-change` event.
+   - in 4.0 `extent` watchers will be call very often
+   - new events for animation. 
 
 
 
@@ -85,7 +100,7 @@ var view = new View3D({
  - Shorter names: `ArcGISTiledLayer`, `ArcGISDynamicLayer`
  - new ones:
    - `ArcGISElevationLayer`
-   - `SceneLayer`
+   - [`SceneLayer`](http://localhost/~yann6817/4.0-2015-devsummit-demos/3d/code/index.html)
    - `GroupLayer`
 
 
@@ -94,17 +109,19 @@ var view = new View3D({
 
  - New layer: GroupLayer
  - group layers together
+ - structure your data visualization
  - visibility mode: `exclusive`, `independent`, `inherit`
- - listMode: 'hide-children', 'hidden'
+ - listMode: `hide-children`, `hidden`
+ - [demo](demos/grouplayer/groupLayer.html)
 
 
 
 ## Collection
 
  - More or less like an Array
- - add/remove/find/forEach/map...
- - emit events when it changes with what has been added/removed/moved
- - used for layers, used for basemap layers, used for graphics
+ - `add` / `remove` / `forEach` / `map` / `find` / `findIndex`...
+ - emit "change" events when something is added/removed/moved
+ - used for layers, used for layers in Basemap, used for graphics
 
 
 
@@ -113,7 +130,10 @@ var view = new View3D({
 - full fledge class `esri/Basemap`
 - basemap's layers are not part of the `map.layers`, but from `map.basemap`
 - contains 3 Collections: baseLayers, referenceLayers, elevationLayers
-- can be set with string for esri's basemap or custom Basemap instance.
+- can be set with
+  - [string for esri's basemap](demos/basemap/basemap2d.html)
+  - or custom [Basemap instance](demos/basemap/basemap2d-custom.html)
+  - in 2D and [3D](demos/basemap/basemap3d.html)
 
 
 
@@ -151,25 +171,24 @@ var view = new View3D({
  - new "engine" in the work.
  - faster, more future proof
    - abstraction to draw tiles and dynamic images to ease custom layers/layerviews
-   - abstraction to draw in DOM or Canvas, possibly webgl ;)
+   - abstraction to draw in DOM or Canvas, possibly webgl ;-)
  - display graphics while zooming.
- - viewpadding
- - continous zoom
+ - [viewpadding](demos/view2d/view-padding.html)
+ - [continous zoom](demos/view2d/resize-extent.html)
  - rotation
 
 
 
 ## 3D
  - webgl engine to display the earth.
- - z/m support in the API, tasks, layers...
+ - [z/m support](http://maps.esri.com/rc/sat/index.html) in the API, tasks, layers...
  - support for simple symbols
- - new Symbols
+ - new 3D Symbols
 
 
 
 ## Animation
  - generic functions like `animateTo(target, options):Promise`
-   - 
  - `esri/Viewpoint`: common way to share between 2D/3D
 
 
@@ -183,7 +202,7 @@ var view = new View3D({
 
 ## Other
  - legacy dojo loader removed - AMD only
- - classes are properly cased: esri/Map, esri/Graphic, esri/layers/Layer
+ - classes will be properly cased: esri/Map, esri/Graphic, esri/layers/Layer
  - Simplifying Popup
 
 
