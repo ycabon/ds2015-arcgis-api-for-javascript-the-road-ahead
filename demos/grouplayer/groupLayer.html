@@ -66,12 +66,13 @@
         map.add(new ArcGISTiledLayer({
           title: 'Dark Gray Canvas',
           url: '//services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer',
-          // listMode: 'hide',
+          //listMode: 'hide',
         }));
 
         group = new GroupLayer({
           title: 'USA Tiled Services',
-          // visibilityMode: 'exclusive'
+          visibilityMode: 'exclusive',
+          //listMode: 'hide-children'
         });
 
         group.add(new ArcGISTiledLayer({

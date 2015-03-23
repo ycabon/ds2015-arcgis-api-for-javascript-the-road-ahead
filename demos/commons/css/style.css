@@ -205,12 +205,12 @@ body.light  {
 }
 
 .light .drawer {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.3);
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
 }
 
 .light .applicationBar {
-  background: rgba(255,255,255, 0.8);
+  background: rgba(255,255,255, 0.3);
   box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.5);
   transition: all 250ms;
 }
