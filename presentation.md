@@ -39,6 +39,11 @@ Jeremy Bartley - Yann Cabon
 
 
 
+Experiment - Map running in node
+![Map running in node](Screen Shot 2015-03-23 at 10.11.08 AM.png)
+
+
+
 ```javascript
 // create the map and its layers
 var map = new Map({
@@ -97,10 +102,10 @@ map.watch('basemap', function(newValue, oldValue, name, target) {
 
  - `map.layers`, a collection of the operational layers
    - mix of image AND graphics
- - Shorter names: `ArcGISTiledLayer`, `ArcGISDynamicLayer`
+ - Shorter names: `TiledLayer`, `DynamicLayer`
  - new ones:
-   - `ArcGISElevationLayer`
-   - [`SceneLayer`](http://localhost/~yann6817/4.0-2015-devsummit-demos/3d/code/index.html)
+   - `ElevationLayer`
+   - `SceneLayer`
    - `GroupLayer`
 
 
