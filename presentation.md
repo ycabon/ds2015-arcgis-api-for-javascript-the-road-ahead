@@ -40,7 +40,7 @@ Jeremy Bartley - Yann Cabon
 
 
 Experiment - Map running in node
-![Map running in node](Screen Shot 2015-03-23 at 10.11.08 AM.png)
+![Map running in node](map-node.png)
 
 
 
