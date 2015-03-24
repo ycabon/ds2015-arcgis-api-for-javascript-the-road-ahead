@@ -167,7 +167,7 @@ map.watch('basemap', function(newValue, oldValue, name, target) {
     ]
   })
 
-  map.set('basemap', 'streets');
+  map.set('basemap', toner);
   ```
 
 
